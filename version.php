@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'tool_scormtrackeditor';
-$plugin->release = '0.1.0';
-$plugin->version = 2023113000;
-$plugin->requires = 2019011400;
+$plugin->release = '0.2.0';
+$plugin->version = 2023121500;
+$plugin->requires  = 2020110901; // Moodle 3.10.1 (Build: 20210118) and upwards.
 $plugin->maturity = MATURITY_ALPHA;

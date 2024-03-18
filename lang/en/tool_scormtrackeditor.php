@@ -33,4 +33,5 @@ $string['nousers'] = 'No users found';
 $string['resetprogress'] = 'Reset SCORM SCO Progress';
 $string['invalidusernames'] = 'Invalid usernames: ';
 $string['reset'] = 'Reset';
+$string['privacy:metadata'] = 'SCORM Track Editor does not store any personal data.';
 

@@ -35,3 +35,4 @@ class scormtrack_editor_form extends \moodleform {
         $mform->addElement('submit', 'resetbutton', get_string('reset', 'tool_scormtrackeditor'));
     }
 }
+

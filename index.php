@@ -38,7 +38,7 @@ $usernames = optional_param('usernames', '', PARAM_TEXT);
 
 if ($confirmed && $scoid !== null && $usernames !== '') {
     $usernames = explode(',', $usernames);
-    process_form_submission($scoid, $usernames);
+    \tool_scormtrackeditor\api::clear_scorm_track_data_for_users($scoid, $usernames);
 } else {
     if ($mform->is_cancelled()) {
         $pluginurl = new moodle_url('/admin/tool/scormtrackeditor/index.php');
@@ -79,45 +79,4 @@ if ($confirmed && $scoid !== null && $usernames !== '') {
 }
 
 echo $OUTPUT->footer();
-
-function process_form_submission($scoid, $usernames) {
-    global $DB, $OUTPUT;
-
-    $validuserids = [];
-    $invalidusernames = [];
-
-    foreach ($usernames as $username) {
-        $userid = $DB->get_field('user', 'id', ['username' => $username]);
-        if ($userid) {
-            $validuserids[] = $userid;
-        } else {
-            $invalidusernames[] = $username;
-        }
-    }
-
-    if (!empty($validuserids)) {
-        list($usersql, $userparams) = $DB->get_in_or_equal($validuserids, SQL_PARAMS_NAMED, 'param1000');
-        $updatesql = "UPDATE {scorm_scoes_track}
-                         SET value = ''
-                       WHERE (element = 'cmi.core.exit'
-                             OR element = 'cmi.suspend_data'
-                             OR element = 'cmi.core.lesson_status'
-                             )
-                             AND scoid = :scoid
-                             AND userid $usersql";
-
-        $params = ['scoid' => $scoid] + $userparams;
-        $DB->execute($updatesql, $params);
-
-        echo $OUTPUT->notification(get_string('updatesuccess', 'tool_scormtrackeditor'), 'notifysuccess');
-    }
-
-    if (!empty($invalidusernames)) {
-        echo $OUTPUT->notification(get_string('invalidusernames', 'tool_scormtrackeditor') . implode(', ', $invalidusernames),
-         'notifyproblem');
-    } else if (empty($validuserids)) {
-        echo $OUTPUT->notification(get_string('novaildusers', 'tool_scormtrackeditor'),
-         'notifyproblem');
-    }
-}
 

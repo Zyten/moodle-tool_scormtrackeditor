@@ -52,8 +52,17 @@ if ($confirmed && $scoid !== null && $usernames !== '') {
 
         // Show confirmation step.
         $queries = new stdClass();
-        $queries->scormname = "SELECT name FROM {scorm} WHERE id = (SELECT scorm FROM {scorm_scoes} WHERE id = :scoid)";
-        $queries->scotitle = "SELECT title FROM {scorm_scoes} WHERE id = :scoid";
+        $queries->scormname = "SELECT name
+                                 FROM {scorm}
+                                WHERE id = (
+                                      SELECT scorm
+                                        FROM {scorm_scoes}
+                                       WHERE id = :scoid
+                                )";
+
+        $queries->scotitle = "SELECT title
+                                FROM {scorm_scoes}
+                               WHERE id = :scoid";
 
         $params = ['scoid' => $scoid];
 
@@ -89,10 +98,13 @@ function process_form_submission($scoid, $usernames) {
     if (!empty($validuserids)) {
         list($usersql, $userparams) = $DB->get_in_or_equal($validuserids, SQL_PARAMS_NAMED, 'param1000');
         $updatesql = "UPDATE {scorm_scoes_track}
-                      SET value = ''
-                      WHERE (element = 'cmi.core.exit' OR element = 'cmi.suspend_data' OR element = 'cmi.core.lesson_status')
-                      AND scoid = :scoid
-                      AND userid $usersql";
+                         SET value = ''
+                       WHERE (element = 'cmi.core.exit'
+                             OR element = 'cmi.suspend_data'
+                             OR element = 'cmi.core.lesson_status'
+                             )
+                             AND scoid = :scoid
+                             AND userid $usersql";
 
         $params = ['scoid' => $scoid] + $userparams;
         $DB->execute($updatesql, $params);

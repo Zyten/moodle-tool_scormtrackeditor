@@ -30,7 +30,7 @@ echo $OUTPUT->heading(get_string('pluginname', 'tool_scormtrackeditor'));
 
 require_once($CFG->dirroot.'/admin/tool/scormtrackeditor/classes/form/scormtrack_editor_form.php');
 
-$mform = new scormtrack_editor_form();
+$mform = new \tool_scormtrackeditor\form\scormtrack_editor_form();
 
 $confirmed = optional_param('confirmed', 0, PARAM_INT);
 $scoid = optional_param('scoid', null, PARAM_INT);

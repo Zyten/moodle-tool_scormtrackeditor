@@ -14,11 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_scormtrackeditor\form;
+
 defined('MOODLE_INTERNAL') || die;
 
 require_once("$CFG->libdir/formslib.php");
 
-class scormtrack_editor_form extends moodleform {
+class scormtrack_editor_form extends \moodleform {
     public function definition() {
         $mform = $this->_form;
 
